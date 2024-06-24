@@ -207,7 +207,7 @@ class WhisperModel:
         best_of: int = 5,
         patience: float = 1,
         length_penalty: float = 1,
-        repetition_penalty: float = 1.5,
+        repetition_penalty: float = 1,
         no_repeat_ngram_size: int = 0,
         temperature: Union[float, List[float], Tuple[float, ...]] = [
             0.0,
@@ -239,7 +239,7 @@ class WhisperModel:
         hallucination_silence_threshold: Optional[float] = None,
         hotwords: Optional[str] = None,
         language_detection_threshold: Optional[float] = None,
-        language_detection_segments: int = 1,
+        language_detection_segments: int = 1.5,
     ) -> Tuple[Iterable[Segment], TranscriptionInfo]:
         """Transcribes an input file.
 
