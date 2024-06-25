@@ -48,8 +48,8 @@ class TranscriptionOptions(NamedTuple):
     beam_size: int
     best_of: int
     patience: float
-    length_: float
-    repetition_: float
+    length_penalty: float
+    repetition_penalty: float
     no_repeat_ngram_size: int
     log_prob_threshold: Optional[float]
     no_speech_threshold: Optional[float]
@@ -205,7 +205,7 @@ class WhisperModel:
         beam_size: int = 5,
         best_of: int = 5,
         patience: float = 1,
-        length_: float = 1,
+        length_penalty: float = 1,
         repetition_penalty: float = 1,
         no_repeat_ngram_size: int = 0,
         temperature: Union[float, List[float], Tuple[float, ...]] = [
