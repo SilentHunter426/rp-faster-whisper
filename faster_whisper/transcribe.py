@@ -74,10 +74,10 @@ class TranscriptionOptions(NamedTuple):
 
 class TranscriptionInfo(NamedTuple):
     language: str
-    language_probability: float
+    probability: float
     duration: float
     duration_after_vad: float
-    all_language_probs: Optional[List[Tuple[str, float]]]
+    all_probs: Optional[List[Tuple[str, float]]]
     transcription_options: TranscriptionOptions
     vad_options: VadOptions
 
@@ -178,7 +178,7 @@ class WhisperModel:
     @property
     def supported_languages(self) -> List[str]:
         """The languages supported by the model."""
-        return list(_LANGUAGE_CODES) if self.model.is_multilingual else ["en"]
+        return list(_CODES) if self.model.is_multilingual else ["en"]
 
     def _get_feature_kwargs(self, model_path, preprocessor_bytes=None) -> dict:
         config = {}
@@ -239,7 +239,7 @@ class WhisperModel:
         hallucination_silence_threshold: Optional[float] = None,
         hotwords: Optional[str] = None,
         language_detection_threshold: Optional[float] = None,
-        language_detection_segments: int = 3,
+        language_detection_segments: int = 1,
     ) -> Tuple[Iterable[Segment], TranscriptionInfo]:
         """Transcribes an input file.
 
