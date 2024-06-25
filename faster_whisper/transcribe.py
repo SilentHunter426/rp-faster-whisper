@@ -74,10 +74,10 @@ class TranscriptionOptions(NamedTuple):
 
 class TranscriptionInfo(NamedTuple):
     language: str
-    probability: float
+    language_probability: float
     duration: float
     duration_after_vad: float
-    all_probs: Optional[List[Tuple[str, float]]]
+    all_language_probs: Optional[List[Tuple[str, float]]]
     transcription_options: TranscriptionOptions
     vad_options: VadOptions
 
@@ -100,8 +100,7 @@ class WhisperModel:
 
         Args:
           model_size_or_path: Size of the model to use (tiny, tiny.en, base, base.en,
-            small, small.en, distil-small.en, medium, medium.en, distil-medium.en, large-v1,
-            large-v2, large-v3, large, distil-large-v2 or distil-large-v3), a path to a
+            small, small.en, medium, medium.en, large-v1, large-v2, large-v3, or large), a path to a
             converted model directory, or a CTranslate2-converted Whisper model ID from the HF Hub.
             When a size or a model ID is configured, the converted model is downloaded
             from the Hugging Face Hub.
@@ -178,7 +177,7 @@ class WhisperModel:
     @property
     def supported_languages(self) -> List[str]:
         """The languages supported by the model."""
-        return list(_CODES) if self.model.is_multilingual else ["en"]
+        return list(_LANGUAGE_CODES) if self.model.is_multilingual else ["en"]
 
     def _get_feature_kwargs(self, model_path, preprocessor_bytes=None) -> dict:
         config = {}
@@ -491,16 +490,14 @@ class WhisperModel:
         content_duration = float(content_frames * self.feature_extractor.time_per_frame)
 
         if isinstance(options.clip_timestamps, str):
-            options = options._replace(
-                clip_timestamps=[
-                    float(ts)
-                    for ts in (
-                        options.clip_timestamps.split(",")
-                        if options.clip_timestamps
-                        else []
-                    )
-                ]
-            )
+            TranscriptionOptions.clip_timestamps = [
+                float(ts)
+                for ts in (
+                    options.clip_timestamps.split(",")
+                    if options.clip_timestamps
+                    else []
+                )
+            ]
         seek_points: List[int] = [
             round(ts * self.frames_per_second) for ts in options.clip_timestamps
         ]
