@@ -206,7 +206,7 @@ class WhisperModel:
         best_of: int = 5,
         patience: float = 1,
         length_penalty: float = 1,
-        repetition_penalty: float = 1,
+        repetition_penalty: float = 3,
         no_repeat_ngram_size: int = 0,
         temperature: Union[float, List[float], Tuple[float, ...]] = [
             0.0,
